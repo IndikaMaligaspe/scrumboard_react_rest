@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+// import { Connect } from '../Common/Connect'
 
 
 class Login extends Component{
@@ -7,29 +8,63 @@ class Login extends Component{
         userName: '',
         password: '',
     }
+
+    csrfSafeMethod = (method) => {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/i.test(method));
+    }
+
+    getCookie = (name) =>{
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    loginAPI = (user, pass)=>{
+        const jsonStr = '{"username": "'+user+'",\n "password":"'+pass+'"}'; 
+        fetch('http://localhost:8000/api/token/' , {
+           method: 'POST',
+           headers: {'Content-Type': 'application/json'},
+           body: jsonStr
+        }).then((response) => response.json())
+        .then(json =>{
+            const apiToken = json["token"];
+            if (apiToken){
+                localStorage.setItem('token', apiToken);
+            }else{
+                console.log("Invalid Cred");
+            }
+        })
+        .catch(console.log("Error while fetching"));         
+    }   
+
     onSubmitClick =e =>{
-        localStorage.setItem('userName', this.state.userName);
-        localStorage.setItem('password', this.state.password);
-        console.log("to Home page");
+        this.loginAPI(this.state.userName, this.state.password); 
     }
 
     onRegisterClick =e =>{
         console.log("to register page");
-
     }
 
     onKeyEnter =e =>{
         if (e.charCode === 13){
             this.onSubmitClick(e);
-            console.log(e.target.value);
-            
         }
     }
     render(){
         return(
             <div style={innerDivStyle}>
-                <input type="text" name="userName" placeholder="User name" onChange={(event)=> this.setState({userName: event.target.value})}/>
-                <input type="password" name="password" placeholder="Paas word" onChange={(event)=> this.setState({password: event.target.value})} onKeyPress={this.onKeyEnter}/> <br/>
+                <input type="text" name="userName" placeholder="Username" onChange={(event)=> this.setState({userName: event.target.value})}/>
+                <input type="password" name="password" placeholder="Paasword" onChange={(event)=> this.setState({password: event.target.value})} onKeyPress={this.onKeyEnter}/> <br/>
                 <div><span style={spacerStyle}></span>
                 <input type="Button" name="login" value="Sign In" onClick={this.onSubmitClick} readOnly/>
                 <p>If not alreay a user <Link to="/register">Sign Up</Link></p>

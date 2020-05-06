@@ -11,7 +11,7 @@ class LoginScreen extends Component{
                     src={logo}
                     alt="logo-sb2k">
                 </img>
-                <p> Login Page </p>
+                <p> &nbsp; </p>
                 <Login/>
             </div>
         );
@@ -23,6 +23,7 @@ const logoStyle = {
     position: "relative", 
     top: 20,
 }
+
 const divStyle = {
     leftMargin: 150,
     width: "30%",
