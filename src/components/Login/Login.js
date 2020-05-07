@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import {PropertyGet} from '../Common/Properties'
-
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import {PropertyGet} from '../Common/Properties';
+import {LoginPageLayout} from '../Layout/Layout';
+import logo from '../../assets/logo.jpg';
 // import { Connect } from '../Common/Connect'
 
 
@@ -68,44 +69,26 @@ class Login extends Component{
 
     render(){
         return(
-            <div style={innerDivStyle}>
-                <input id="userName" ref={this.userName} type="text" name="userName" placeholder="Username" onChange={(event)=> this.setState({userName: event.target.value,message:'',})}/>
-                <input id="passWord" ref={this.passWord} type="password" name="password" placeholder="Paasword" onChange={(event)=> this.setState({password: event.target.value,message:'',})} onKeyPress={this.onKeyEnter}/> <br/>
-                <div style={errorStyle}>{this.state.message}</div>
-                <div><span style={spacerStyle}></span>
-                <input type="Button" name="login" value="Sign In" onClick={this.onSubmitClick} readOnly/>
-                <p>If not already a user <Link to="/register">Sign Up</Link></p>
-                </div>
-            </div>
+                <React.Fragment>     
+                    <LoginPageLayout
+                                    logo = {<img style={logoStyle} src={logo}  alt="logo-sb2k"/>} 
+                                    username={<input id="userName" ref={this.userName} type="text" name="userName" placeholder="Username" onChange={(event)=> this.setState({userName: event.target.value,message:'',})}/>}
+                                    password={<input id="passWord" ref={this.passWord} type="password" name="password" placeholder="Paasword" onChange={(event)=> this.setState({password: event.target.value,message:'',})} onKeyPress={this.onKeyEnter}/> }
+                                    message={this.state.message}
+                                    signIn={<input type="Button" name="login" value="Sign In" onClick={this.onSubmitClick} readOnly/>}
+                                    signinLink={<p>If not already a user <Link to="/register">Sign Up</Link></p>}
+                                 >
+                    </LoginPageLayout>                 
+                </React.Fragment>
+
+            
         )
     }
 }
 
-
-const innerDivStyle = {
-    width:"40%",
-    height:200,
-    borer: 1, 
-    backgroundColor: "#999",
-    textAlign: "center",
-    margin: "0 auto",
-    padding:2,
-    fontSize:12
-}
-
-const spacerStyle={
-    textAlign:"right",
-    display: "inline-block",
-    paddingRight: 0,
-    marginRight: 0,
-}
-
-const errorStyle={
-    color:"red",
-    fontSize:14,
-    padding:0,
-    margin:0,
-    textAlign:"center",
-    // backgroudColor:""
+const logoStyle = {
+    width:100, 
+    align: "center",
+    paddingBottom: 10,
 }
 export default Login;
