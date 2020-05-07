@@ -15,7 +15,7 @@ export const LoginScreenLayout = (props) =>(
             <Col lg={3}></Col>
         </Row>
     </Container>
-)
+);
 
 export const LoginPageLayout = (props) =>(
     <Container style={loginContainerStyle}>
@@ -27,6 +27,21 @@ export const LoginPageLayout = (props) =>(
         <Row style={loginRowStyle}><Col>{props.signinLink}</Col></Row>
     </Container>
 )
+
+export const RegistrationScreenLayout = (props) =>(
+    <Container style={loginContainerStyle}>
+        <Row >
+            <Col lg={3} ></Col>
+            <Col lg={6} >{props.cred}</Col>
+            <Col lg={3} ></Col>
+        </Row>
+        <Row >
+            <Col lg={3} ></Col>
+            <Col lg={6} >{props.profile}</Col>
+            <Col lg={3} ></Col>
+        </Row>
+    </Container>
+);
 
 const loginRowStyle = {
     width:"100%",

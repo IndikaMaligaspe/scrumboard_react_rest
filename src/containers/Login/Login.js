@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {PropertyGet} from '../Common/Properties';
-import {LoginPageLayout} from '../Layout/Layout';
+import {LoginPageLayout} from '../../components/Layout/Layout';
 import logo from '../../assets/logo.jpg';
 // import { Connect } from '../Common/Connect'
 
@@ -34,9 +34,13 @@ class Login extends Component{
                 localStorage.setItem('token', apiToken);
             }else{
                 console.log("Invalid Cred");
+                this.setState( {message: "Invalid Credentials"})
             }
         })
-        .catch(this.setState( {message: "Invalid Credentials"}));         
+        .catch(e => {
+            console.log(e.message);
+            // this.setState( {message: "Invalid Credentials"})
+        });         
     }   
 
     onSubmitClick =e =>{

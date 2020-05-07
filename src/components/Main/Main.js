@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom'
-import LoginScreen from '../../containers/LoginScreen/LoginScreen'
-import RegistrationScreen from '../../containers/RegistrationScreen/RegistrationScreen'
+import LoginScreen from '../LoginScreen/LoginScreen'
+import RegistrationScreen from '../../components/RegistrationScreen/RegistrationScreen'
 
 
 const Main = props =>(
