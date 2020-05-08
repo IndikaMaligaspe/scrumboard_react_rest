@@ -16,10 +16,10 @@ const listStyle = {
 const UserLogin = (
     <Container>
         <Row>
-            <Col lg={4} style={{textAlign:"left"}}><label  id="id_username" readOnly>UserName:</label></Col>
-            <Col lg={5} style={{textAlign:"left"}}>
-            <input  type="text" id="username" ></input></Col>
-            <Col lg={2} style={{textAlign:"left"}}><a href="#">Verify</a></Col>
+            <Col lg={4} style={{textAlign:"left"}}><label  id="id_username" readOnly>User name:</label></Col>
+            <Col lg={7} style={{textAlign:"left"}}>
+            <input  type="text" id="username" ></input>&nbsp;<a href="#">Verify</a></Col>
+            <Col lg={1} style={{textAlign:"left"}}></Col>
         </Row>
         <Row>
             <Col lg={3} ></Col>    

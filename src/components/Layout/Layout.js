@@ -43,6 +43,15 @@ export const RegistrationScreenLayout = (props) =>(
     </Container>
 );
 
+export const HomeLayout = (props) =>(
+    <Container>
+        <Row>
+            <Col lg={3}>{props.sidebar}</Col>
+            <Col lg={8}>{props.mainbord}</Col>
+        </Row>
+    </Container>
+);
+
 const loginRowStyle = {
     width:"100%",
     paddingBottom: 2
