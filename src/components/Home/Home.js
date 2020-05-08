@@ -1,4 +1,4 @@
-import React,  { Ccomponent } from 'react';
+import React  from 'react';
 import {HomeLayout} from '../Layout/Layout';
 import  SideBar   from './SideBar';
 import  MainBoard from './MainBoard';

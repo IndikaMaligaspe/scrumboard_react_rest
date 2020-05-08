@@ -1,4 +1,4 @@
-import React , { Component } from 'react';
+import React   from 'react';
 import Login from '../../containers/Login/Login';
 
 import { LoginScreenLayout } from '../Layout/Layout';

@@ -1,9 +1,12 @@
 import React from 'react'
+import SprintList from '../../containers/SprintList/SprintList'
 
 const MainBoard = (props) => (
     <div>
         <div>Recently Viewed</div>
-        <div>Team Boards</div>
+        <div> 
+            <SprintList></SprintList>
+        </div>
     </div>
 );
 
