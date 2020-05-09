@@ -1,14 +1,27 @@
-import React , {Component } from 'react'
-import { PropertyGet } from '../../containers/Common/Properties'
+import React , {Component } from 'react';
+import { PropertyGet } from '../../containers/Common/Properties';
+import {SprintCardList} from '../../components/Home/SprintCard';
+import { withRouter } from 'react-router-dom';
 
 
 
 class SprintList extends Component{
-
     state = {
         token:'',
         sprintURL: '',
-        sprints: null
+        sprints: [],
+    }
+
+    constructor(props){
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(path, id){
+        if(path){
+            this.props.history.push(path);            
+        }
+        
     }
 
     componentDidMount() {
@@ -28,19 +41,14 @@ class SprintList extends Component{
 
     render(){
         const sprints = this.state.sprints
-        console.log(sprints);
         return (
             <div>
                 {sprints !== null &&
-                  <div>
-                     <ul>
-                         <li>{sprints[1].name}</li>
-                     </ul> 
-                  </div>
+                   <SprintCardList sprintList={sprints} title={this.props.title} clickOnCard={this.handleClick}></SprintCardList>
                 }
             </div>
         )
     }
 }
 
-export default SprintList;
+export default withRouter(SprintList);
