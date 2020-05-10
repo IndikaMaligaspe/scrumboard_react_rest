@@ -1,25 +1,123 @@
 import React, {Component} from 'react';
-import queryString from 'query-string';
+import {PropertyGet} from '../Common/Properties'
+import { TaskList } from '../../components/Tasks/TaskList'
+import {Card, Container, Row, Col } from 'react-bootstrap'
+
+var Tasks = function( name, task){
+    this.name = name;
+    this.task = task;
+}
 
 class SprintDetails extends Component{
 
     state  = {
         id: '',
+        taskList:[],
+        taskTypes:['To Do','In Development','Completed','In Testing'],
     }
    
     constructor(props){
-        super(props)
-        let {id} =  this.props.match.params
+        super(props);
+        let {id} =  this.props.match.params;
         this.state.id = id;
     }
 
+    prepTaskList(taskList){
+        var toDoList = [];
+        var inProgresList = []
+        var completedList = [];
+        var inTestingList = [];
+        // var mainList = [5]
+        if(taskList){
+            taskList.forEach(task => {
+               if(task.status_display === 'Not Started'){
+                    toDoList.push(task);                    
+               } 
+               if(task.status_display === 'In Development'){
+                    inProgresList.push(task);                    
+               } 
+               if(task.status_display === 'In Testing'){
+                    inTestingList.push(task);                    
+               } 
+               if(task.status_display === 'Completed'){
+                    completedList.push(task);                    
+               } 
+
+            });        
+        }
+        return [toDoList,inProgresList,completedList,inTestingList];
+    }
+
     componentDidMount(){
-       console.log('id - '+this.state.id);
+        const sprintDetailsAPIURL = PropertyGet({key:'sprintDetailsAPIURL'});
+        const token = localStorage.getItem('token')
+        const id = this.state.id
+        if ((id) && (sprintDetailsAPIURL)){
+            let url = sprintDetailsAPIURL+id
+            fetch(url,{
+                method: 'GET',
+                headers:{'Content-Type': 'application/json', 
+                'Authorization':'Token '+token}
+            })
+            .then((response)=>response.json())
+            .then((json)=>{
+               this.setState({'taskList':json});
+            })
+            .catch((e)=>{console.log(e)});
+        }
     }
 
     render(){
+        const taskList = this.prepTaskList(this.state.taskList);
         return(
-            <div>tuutut</div>
+            <Container style={{padding:0, margin:0}}>
+               
+                { (taskList) && (taskList.length > 0) &&  
+                <Row >
+                   <Col lg={3}> 
+                        <Card>
+                            <Card.Header>To Do</Card.Header>
+                            {
+                            taskList[0].map((task)=>(
+                                    <TaskList task={task} key={task.id}></TaskList>       
+                            ))
+                            }
+                        </Card>
+                    </Col>
+                    <Col lg={3}>
+                        <Card>
+                            <Card.Header>In Progress</Card.Header>
+                            {
+                            taskList[1].map((task)=>(
+                                    <TaskList task={task} key={task.id}></TaskList>       
+                            ))
+                            }
+                        </Card>
+                    </Col>
+                    <Col lg={3}>
+                        <Card>
+                            <Card.Header>In QA</Card.Header>
+                            {
+                            taskList[2].map((task)=>(
+                                    <TaskList task={task} key={task.id}></TaskList>       
+                            ))
+                            }
+                        </Card>
+                    </Col>
+                    <Col lg={3}>
+                        <Card>
+                            <Card.Header>Completed</Card.Header>
+                            {
+                            taskList[3].map((task)=>(
+                                    <TaskList task={task} key={task.id}></TaskList>       
+                            ))
+                            }
+                        </Card>
+                    </Col>
+                </Row>
+                }
+            
+           </Container>
         );
     }
 }
