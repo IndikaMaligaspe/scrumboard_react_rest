@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
+
 export const Layout =(props) =>(
     <Container>
         {props.children}
@@ -8,7 +9,8 @@ export const Layout =(props) =>(
 );
 
 export const LoginScreenLayout = (props) =>(
-    <Container >
+    
+    <Container>
         <Row >
             <Col lg={3}></Col>
             <Col lg={6}>{props.children}</Col>

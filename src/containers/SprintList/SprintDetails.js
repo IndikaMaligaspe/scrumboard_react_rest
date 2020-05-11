@@ -70,7 +70,6 @@ class SprintDetails extends Component{
 
     render(){
         const taskList = this.prepTaskList(this.state.taskList);
-        console.log(taskList);
         return(
             <Container style={{padding:0, margin:0, backgroudColor:"skyblue"}}>
                
