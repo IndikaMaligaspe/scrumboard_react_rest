@@ -14,6 +14,7 @@ class SprintDetails extends Component{
         id: '',
         taskList:[],
         taskTypes:['To Do','In Development','Completed','In Testing'],
+        show: false,
     }
    
     constructor(props){
@@ -69,13 +70,14 @@ class SprintDetails extends Component{
 
     render(){
         const taskList = this.prepTaskList(this.state.taskList);
+        console.log(taskList);
         return(
-            <Container style={{padding:0, margin:0}}>
+            <Container style={{padding:0, margin:0, backgroudColor:"skyblue"}}>
                
                 { (taskList) && (taskList.length > 0) &&  
                 <Row >
                    <Col lg={3}> 
-                        <Card>
+                        <Card> 
                             <Card.Header>To Do</Card.Header>
                             {
                             taskList[0].map((task)=>(

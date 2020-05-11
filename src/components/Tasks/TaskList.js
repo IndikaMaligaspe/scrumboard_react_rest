@@ -1,11 +1,51 @@
 import React from 'react'
-import {Card, Container, Row, Col } from 'react-bootstrap'
+import {Modal , Button, Card, Container, Row, Col, Form, FormControl } from 'react-bootstrap';
 
-export const TaskList = (props) =>(
-  <Container>
+export function TaskList (props) {
+  const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => {setShow(true);}   
+//   console.log("Model Dialog..."+show)
+  return (
+    <>  
+      <Modal show={show} onHide={handleClose} centered>
+            <Modal.Header closeButton>
+            <Modal.Title>
+                <Form>
+                    <Form.Group>
+                        <Form.Control plaintext  placeholder="Task name" style={{fontWeight:"bold"}} />
+                        
+                    </Form.Group>
+                </Form>
+            </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group>
+                        <Form.Control size="1g" as="textarea" rows="3" placeholder="Task Description" />
+                        <br/>
+                        <Form.Control   type="text" placeholder="Task assignee" style={{width:"30%"}}/> 
+                        <Form.Control   type="text" placeholder="sprint" style={{width:"30%"}}/>
+                        <br/> 
+                        <Form.Control   plaintext readOnly placeholder="started : " style={{width:"30%"}}/> 
+                        <Form.Control   plaintext readOnly placeholder="due : " style={{width:"30%"}}/> 
+                        <br/>
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+                Save Changes
+            </Button>
+            </Modal.Footer>
+      </Modal>
+      <Container>
       <Row>
           <Col lg={12}>
-              <Card style={cardLayoutStyle}>
+              <Card style={cardLayoutStyle} onClick={handleShow}> 
                 <Card.Body>
                     <Card.Text>{props.task.name}</Card.Text>   
                     { (props.task.due) &&
@@ -16,8 +56,10 @@ export const TaskList = (props) =>(
               </Card>
           </Col>
       </Row>
-  </Container>
-);
+    </Container>
+  </>
+  );
+}
 
 const cardLayoutStyle = {
     marginLeft:0, 
