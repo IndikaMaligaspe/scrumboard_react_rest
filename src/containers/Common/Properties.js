@@ -5,6 +5,7 @@ const URLS = {
     homeURL: "/home",
     sprintAPIURL:'http://localhost:8000/api/sprints',
     sprintDetailsAPIURL:'http://localhost:8000/api/tasks?sprint=',
+    taskDetailsAPIURL:'http://localhost:8000/api/tasks/',
 }
 
  const PropertyGet =  (props) => {

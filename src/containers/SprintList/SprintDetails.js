@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import {PropertyGet} from '../Common/Properties'
-import { TaskList } from '../../components/Tasks/TaskList'
+// import { TaskList } from '../../components/Tasks/TaskList'
 import {Card, Container, Row, Col } from 'react-bootstrap'
+import TaskList from '../../containers/TaskList/TaskList'
 
-var Tasks = function( name, task){
-    this.name = name;
-    this.task = task;
-}
 
 class SprintDetails extends Component{
 
@@ -15,6 +12,7 @@ class SprintDetails extends Component{
         taskList:[],
         taskTypes:['To Do','In Development','Completed','In Testing'],
         show: false,
+        abd:''
     }
    
     constructor(props){
@@ -22,6 +20,7 @@ class SprintDetails extends Component{
         let {id} =  this.props.match.params;
         this.state.id = id;
     }
+    
 
     prepTaskList(taskList){
         var toDoList = [];
@@ -62,6 +61,7 @@ class SprintDetails extends Component{
             })
             .then((response)=>response.json())
             .then((json)=>{
+               console.log(json);
                this.setState({'taskList':json});
             })
             .catch((e)=>{console.log(e)});
