@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {PropertyGet} from '../Common/Properties'
+import {withRouter} from 'react-router-dom';
+import {PropertyGet} from '../Common/Properties';
 // import { TaskList } from '../../components/Tasks/TaskList'
-import {Card, Container, Row, Col } from 'react-bootstrap'
-import TaskList from '../../containers/TaskList/TaskList'
+import {Card, Container, Row, Col } from 'react-bootstrap';
+import TaskList from '../../containers/TaskList/TaskList';
 
 
 class SprintDetails extends Component{
@@ -12,15 +13,25 @@ class SprintDetails extends Component{
         taskList:[],
         taskTypes:['To Do','In Development','Completed','In Testing'],
         show: false,
-        abd:''
+        abd:'',
+        users: [],
     }
    
     constructor(props){
         super(props);
         let {id} =  this.props.match.params;
         this.state.id = id;
+        this.handleClick = this.handleClick.bind(this);
     }
-    
+   
+    handleClick(path, id){
+        console.log(path);
+        if(path){
+            this.props.history.push(path);     
+            window.location.reload(false);
+        }
+        
+    }
 
     prepTaskList(taskList){
         var toDoList = [];
@@ -66,6 +77,8 @@ class SprintDetails extends Component{
             })
             .catch((e)=>{console.log(e)});
         }
+        // Need to fetch from server.
+        this.setState({"users":[{id: 1, name: 'John'},{id: 2, name: 'Miles'},{id: 3, name: 'Charles'},{id: 1, name: 'indika'}]});
     }
 
     render(){
@@ -80,7 +93,7 @@ class SprintDetails extends Component{
                             <Card.Header>To Do</Card.Header>
                             {
                             taskList[0].map((task)=>(
-                                    <TaskList task={task} key={task.id}></TaskList>       
+                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
                             ))
                             }
                         </Card>
@@ -90,7 +103,7 @@ class SprintDetails extends Component{
                             <Card.Header>In Progress</Card.Header>
                             {
                             taskList[1].map((task)=>(
-                                    <TaskList task={task} key={task.id}></TaskList>       
+                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
                             ))
                             }
                         </Card>
@@ -100,7 +113,7 @@ class SprintDetails extends Component{
                             <Card.Header>In QA</Card.Header>
                             {
                             taskList[2].map((task)=>(
-                                    <TaskList task={task} key={task.id}></TaskList>       
+                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
                             ))
                             }
                         </Card>
@@ -110,7 +123,7 @@ class SprintDetails extends Component{
                             <Card.Header>Completed</Card.Header>
                             {
                             taskList[3].map((task)=>(
-                                    <TaskList task={task} key={task.id}></TaskList>       
+                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
                             ))
                             }
                         </Card>
@@ -123,4 +136,4 @@ class SprintDetails extends Component{
     }
 }
 
-export default SprintDetails;
+export default withRouter (SprintDetails);

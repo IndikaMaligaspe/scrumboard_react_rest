@@ -20,7 +20,7 @@ export const SprintCardList = (props) =>(
         </Row>         
         <Row>
             {props.sprintList.map((sprint) =>(
-                <SprintCard sprint={sprint} key={sprint.id} clickOnCard={props.clickOnCard}></SprintCard>
+                <SprintCard sprint={sprint} key={sprint.id} sprintId={sprint.id} clickOnCard={props.clickOnCard}></SprintCard>
                  
             ))}
         </Row>
