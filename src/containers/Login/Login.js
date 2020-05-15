@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import {PropertyGet} from '../Common/Properties';
 import {LoginPageLayout} from '../../components/Layout/Layout';
 import logo from '../../assets/logo.jpg';
@@ -12,12 +11,16 @@ class Login extends Component{
         userName: '',
         password: '',
         message: '',
+        render: true,
     }
 
     constructor(props){
         super(props);
-        this.userName = React.createRef();
-        this.passWord = React.createRef();
+
+        this.onSubmitClick = this.onSubmitClick.bind(this);
+        this.onKeyEnter = this.onKeyEnter.bind(this);
+        this.onUserNameChange = this.onUserNameChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     // using a promise to ensure the redirecting waits till server returns results
@@ -32,13 +35,13 @@ class Login extends Component{
                     body: jsonStr
                     }).then((response) => response.json())
                     .then(json =>{
+                        console.log(json);
                         const apiToken = json["token"];
                         if (apiToken){
                             localStorage.setItem('token', apiToken);
                             response =  PropertyGet({key:'homeURL'});
                             resolve(response);
                         }else{
-                            console.log("Invalid Cred");
                             this.setState( {message: "Invalid Credentials"})
                             response = "Invalid Cred"
                             reject(response);
@@ -51,28 +54,32 @@ class Login extends Component{
         });
     }   
     
+    onUserNameChange(e){
+        this.setState({"userName":e})
+    }    
     
     onSubmitClick =e =>{
         if(!this.validate())
             return;
         this.loginAPI(this.state.userName, this.state.password)
         .then(path=>{
-            console.log(path);
             this.props.history.push(path);
         }).catch(error=>{
             console.log(error); 
         });
     }
-       
+    
+    onPasswordChange =e =>{
+        this.setState({"password":e.target.value});
+    }
+    
     onKeyEnter =e =>{
-        if (e.charCode === 13){
+        if (e.charCode === 13)
             this.onSubmitClick(e);
-        }
     }
 
     validate= () =>{
         if(this.state.userName.trim().length === 0){
-             this.userName.current.focus();
              this.setState( {message: "Please enter user name"});
              return false;
         }else if(this.state.password.trim().length === 0){
@@ -84,19 +91,12 @@ class Login extends Component{
 
     render(){
        return(
-                <React.Fragment>     
-                    <LoginPageLayout
-                                    logo = {<img style={logoStyle} src={logo}  alt="logo-sb2k"/>} 
-                                    username={<input id="userName" ref={this.userName} type="text" name="userName" placeholder="Username" onChange={(event)=> this.setState({userName: event.target.value,message:'',})}/>}
-                                    password={<input id="passWord" ref={this.passWord} type="password" name="password" placeholder="Paasword" onChange={(event)=> this.setState({password: event.target.value,message:'',})} onKeyPress={this.onKeyEnter}/> }
-                                    message={this.state.message}
-                                    signIn={<button name="login" onClick={this.onSubmitClick}>Sign In</button>}
-                                    signinLink={<p>If not already a user <Link to="/register">Sign Up</Link></p>}
-                                 >
+            <React.Fragment>     
+                    <LoginPageLayout keyEnter={this.onKeyEnter} submitForm={this.onSubmitClick} 
+                                      onUserNameChange={this.onUserNameChange} onPasswordChange={this.onPasswordChange}
+                                      message={this.state.message}>
                     </LoginPageLayout>                 
-                </React.Fragment>
-
-            
+            </React.Fragment>
         )
     }
 }

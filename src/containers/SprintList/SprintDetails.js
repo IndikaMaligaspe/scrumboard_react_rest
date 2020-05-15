@@ -41,27 +41,35 @@ class SprintDetails extends Component{
         // var mainList = [5]
         if(taskList){
             taskList.forEach(task => {
-               if(task.status_display === 'Not Started'){
+                console.log(task.status);
+               if(task.status === 1){
                     toDoList.push(task);                    
                } 
-               if(task.status_display === 'In Development'){
+               if(task.status === 2){
                     inProgresList.push(task);                    
                } 
-               if(task.status_display === 'In Testing'){
+               if(task.status === 3){
                     inTestingList.push(task);                    
                } 
-               if(task.status_display === 'Completed'){
+               if(task.status === 4){
                     completedList.push(task);                    
                } 
 
-            });        
+            });  
+            toDoList.push({"id":"","name":"[ + ] - Add Task", "assigned":"Indika"});
+
         }
         return [toDoList,inProgresList,completedList,inTestingList];
     }
 
     componentDidMount(){
-        const sprintDetailsAPIURL = PropertyGet({key:'sprintDetailsAPIURL'});
         const token = localStorage.getItem('token')
+        this.getTasks(token);
+        this.getUsers(token);        
+    }
+
+    getTasks = (token) =>{
+        const sprintDetailsAPIURL = PropertyGet({key:'sprintDetailsAPIURL'});
         const id = this.state.id
         if ((id) && (sprintDetailsAPIURL)){
             let url = sprintDetailsAPIURL+id
@@ -72,62 +80,54 @@ class SprintDetails extends Component{
             })
             .then((response)=>response.json())
             .then((json)=>{
-               console.log(json);
                this.setState({'taskList':json});
             })
             .catch((e)=>{console.log(e)});
         }
-        // Need to fetch from server.
-        this.setState({"users":[{id: 1, name: 'John'},{id: 2, name: 'Miles'},{id: 3, name: 'Charles'},{id: 1, name: 'indika'}]});
+    }
+
+    getUsers= (token) =>{
+        const userDetailsAPIURL = PropertyGet({key:"userDetailsAPIURL"});
+        let users = [];
+        if(userDetailsAPIURL){
+            fetch(userDetailsAPIURL,
+                {method: 'GET',
+                headers:{'Content-Type': 'application/json', 
+                'Authorization':'Token '+token}
+            })
+            .then((response) => response.json())
+            .then((json) =>{
+                json.forEach(user => {
+                    if(user.is_active)
+                        users.push({"id":user.id, "name":user.username});      
+                });
+                this.setState({"users":users});
+            })
+            .catch((e)=>{console.log(e);})
+        }
     }
 
     render(){
         const taskList = this.prepTaskList(this.state.taskList);
+        const taskMap = this.state.taskTypes;
         return(
-            <Container style={{padding:0, margin:0, backgroudColor:"skyblue"}}>
-               
+            <Container>
                 { (taskList) && (taskList.length > 0) &&  
                 <Row >
-                   <Col lg={3}> 
-                        <Card> 
-                            <Card.Header>To Do</Card.Header>
-                            {
-                            taskList[0].map((task)=>(
-                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
-                            ))
-                            }
-                        </Card>
-                    </Col>
-                    <Col lg={3}>
-                        <Card>
-                            <Card.Header>In Progress</Card.Header>
-                            {
-                            taskList[1].map((task)=>(
-                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
-                            ))
-                            }
-                        </Card>
-                    </Col>
-                    <Col lg={3}>
-                        <Card>
-                            <Card.Header>In QA</Card.Header>
-                            {
-                            taskList[2].map((task)=>(
-                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
-                            ))
-                            }
-                        </Card>
-                    </Col>
-                    <Col lg={3}>
-                        <Card>
-                            <Card.Header>Completed</Card.Header>
-                            {
-                            taskList[3].map((task)=>(
-                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}></TaskList>       
-                            ))
-                            }
-                        </Card>
-                    </Col>
+                   {taskMap.map((value, index) =>{
+                       return <React.Fragment key={index}>
+                            <Col lg={3}> 
+                            <Card> 
+                                <Card.Header>{value}</Card.Header>
+                                {
+                                taskList[index].map((task)=>(
+                                        <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
+                                ))
+                                }
+                            </Card>
+                        </Col>
+                      </React.Fragment>
+                   })}
                 </Row>
                 }
             

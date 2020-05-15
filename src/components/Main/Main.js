@@ -1,16 +1,16 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom'
-import LoginScreen from '../LoginScreen/LoginScreen'
-import RegistrationScreen from '../../components/RegistrationScreen/RegistrationScreen'
+import RegsitrationScreen from '../../containers/Registration/RegistrationContainer'
 import HomeScreen from '../Home/Home'
 import SprintDetails from '../../containers/SprintList/SprintDetails'
+import Login from '../../containers/Login/Login'
 
 
 const Main = props =>(
     <Switch>
-       <Route exact path="/" component={LoginScreen}></Route>
-       <Route exact path="/login" component={LoginScreen}></Route>
-       <Route exact path="/register" component={RegistrationScreen}></Route>
+       <Route exact path="/" component={Login}></Route>
+       <Route exact path="/login" component={Login}></Route>
+       <Route exact path="/register" component={RegsitrationScreen}></Route>
        <Route exact path="/home" component={HomeScreen}></Route>
        <Route exact path="/sprintDetails/:id" component={SprintDetails}></Route>
     </Switch>

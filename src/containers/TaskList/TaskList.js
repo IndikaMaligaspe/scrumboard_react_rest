@@ -1,7 +1,6 @@
 import React , { Component } from "react";
-import {Modal , Button, Card, Container, Row, Col, Form } from 'react-bootstrap';
-import {Typeahead} from 'react-bootstrap-typeahead';
 import {PropertyGet} from '../../containers/Common/Properties';
+import Tasks from '../../components/Tasks/Tasks'
 
 class TaskList extends Component {
     state =  {
@@ -13,6 +12,7 @@ class TaskList extends Component {
         taskDue: '',
         taskSprintId: '',
         show : false,
+        task : [],
         users:[]
     }
      
@@ -22,14 +22,27 @@ class TaskList extends Component {
         this.state.taskName = props.task.name;
         this.state.taskDescription = props.task.description;
         this.state.taskAssigned = props.task.assigned;
-        this.state.taskStatus = props.task.status_display;
+        this.state.taskStatus = props.task.status;
         this.state.taskStart = props.task.started;
         this.state.taskEnd = props.task.due;
         this.state.taskSprintId = props.task.sprint;
         this.state.taskCompleted = props.task.completed;
         this.state.users = props.users;
+        this.state.task = props.task;  
+        this.handleSave = this.handleSave.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleShow = this.handleShow.bind(this)
+        this.updateState = this.updateState.bind(this);
+        this.setSelected = this.setSelected.bind(this);
     }
     
+    updateState = (attrname, value) =>{
+       if ((attrname) && (value)){
+            this.setState({[attrname]:value});
+        }
+    }
+
+
     handleSave = () => {
             this.setState({"show":false});
             this.updateTask();
@@ -40,7 +53,7 @@ class TaskList extends Component {
         this.setState({"taskName":this.props.task.name});
         this.setState({"taskDescription":this.props.task.description});
         this.setState({"taskAssigned":this.props.task.assigned});
-        this.setState({"taskStatus":this.props.task.status_display});
+        this.setState({"taskStatus":this.props.task.status});
         this.setState({"taskStart":this.props.task.started});
         this.setState({"taskEnd":this.props.task.due});
         this.setState({"taskSprintId":this.props.task.sprint});
@@ -61,13 +74,13 @@ class TaskList extends Component {
     updateTask(){
         var url = PropertyGet({key:'taskDetailsAPIURL'})+this.state.taskId;
         var token = localStorage.getItem("token");
-        console.log(this.state.taskName);
+        console.log(this.state.task);
         const data={
             id: this.state.taskId,
             name: this.state.taskName,
             description: this.state.taskDescription,
             sprint: this.state.taskSprintId,
-            status_display: this.state.taskStatus,
+            status: this.state.taskStatus,
             assigned: this.state.taskAssigned,
             started: this.state.taskStart,
             due: this.state.taskEnd,
@@ -79,7 +92,7 @@ class TaskList extends Component {
             headers: {  'Content-Type': 'application/json', 
                         'Authorization':'Token '+token
                     },
-            body: JSON.stringify(data),  
+                    body: JSON.stringify(data),  
             })
         .then((response)=> response.json())
         .then((json)=> {
@@ -89,94 +102,18 @@ class TaskList extends Component {
         .catch((e)=>console.log(e));
     }
     
-   
-
     render(){
         return (
-            <>
-            <Modal show={this.state.show} onHide={this.handleClose} centered>
-                <Modal.Header closeButton>
-                <Modal.Title>
-                    <Form>
-                        <Form.Group as={Row}>
-                            <Col sm="10">
-                                <Form.Control plaintext  placeholder={this.state.taskName} style={{fontWeight:"bold"}} onChange={(e)=>{this.setState({"taskName":e.target.value})}}/>
-                            </Col>
-                        </Form.Group>
-                    </Form>
-                </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group as={Row}>
-                            <Col sm="12">
-                                <Form.Control size="1g" as="textarea" rows="3" placeholder={this.props.task.description} onChange={(e)=>{this.setState({"taskDescription":e.target.value})}} />
-                            </Col>
-                        </ Form.Group> 
-    
-                        <Form.Group as={Row}>
-                            <Form.Group as={Col}>
-                                <Form.Label>Assignee</Form.Label>
-                                <Typeahead id="assigned_users" labelKey="name" multiple={false} onChange={(e)=>{this.setSelected(e)}}
-                                            options={this.state.users} placeholder={this.props.task.assigned} />
-                            </Form.Group>
-                            <Form.Group as={Col}>
-                                <Form.Label>Status</Form.Label>
-                                <Form.Control as="select" placeholder={this.props.task.status_display} onChange={(e)=>{this.setState({"taskStatus":e.target.value})}}>
-                                    <option value="Not Started">Not Started</option>
-                                    <option value="In Development">In Development</option>
-                                    <option value="In Testing">In Testing</option>
-                                    <option value="Completed">Completed</option>
-                                </Form.Control>
-                            </Form.Group>
-                        </Form.Group>                    
-                        <Form.Group as={Row}>
-                            <Form.Group as={Col}>
-                                <Form.Label>Started</Form.Label>
-                                <Form.Control   type="text" placeholder={this.props.task.started} onChange={(e)=>{this.setState({"taskStart":e.target.value})}}/> 
-                            </Form.Group>
-                            <Form.Group as={Col}>
-                                <Form.Label>Due</Form.Label>
-                                <Form.Control   type="text" placeholder={this.props.task.due} onChange={(e)=>{this.setState({"taskEnd":e.target.value})}}/>
-                            </Form.Group>
-                        </Form.Group>                    
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={this.handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={this.handleSave}>
-                    Save Changes
-                </Button>
-                </Modal.Footer>
-            </Modal>
-            <Container>
-            <Row>
-                <Col lg={12}>
-                    <Card style={cardLayoutStyle} onClick={this.handleShow}> 
-                    <Card.Body>
-                        <Card.Text>{this.state.taskName}</Card.Text>   
-                        { (this.state.taskDue) &&
-                            <Card.Subtitle>Due- {this.props.task.due}</Card.Subtitle>
-                        }
-                        <Card.Subtitle style={{textAlign:"right", color:"blue"}}>{this.state.taskAssigned}</Card.Subtitle>
-                    </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
-        </>
+                <Tasks  show={this.state.show} 
+                        handleSave={this.handleSave} 
+                        handleClose = {this.handleClose}
+                        handleShow = {this.handleShow}
+                        updateState = {this.updateState}
+                        setSelected = {this.setSelected}
+                        task ={this.props.task}
+                        users= {this.state.users}></Tasks>        
         );
     }
   }
   
-  const cardLayoutStyle = {
-      marginLeft:0, 
-      marginTop:1,
-      marginBottom:1,
-      padding:0,
-      cursor: "pointer",
-  }
-
   export default TaskList;

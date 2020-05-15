@@ -1,5 +1,8 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col   } from 'react-bootstrap';
+import {Login} from '../../components/Login/Login'
+
+import RegistrationScreen from '../../components/Registration/RegistrationScreen'
 
 
 export const Layout =(props) =>(
@@ -21,30 +24,17 @@ export const LoginScreenLayout = (props) =>(
 
 export const LoginPageLayout = (props) =>(
     <Container style={loginContainerStyle}>
-        <Row style={loginRowStyle}><Col>{props.logo}</Col></Row>
-        <Row style={loginRowStyle}><Col>{props.username}</Col></Row>
-        <Row style={loginRowStyle}><Col>{props.password}</Col></Row>
-        <Row style={loginRowStyle}><Col>{props.message}</Col></Row>
-        <Row style={loginRowStyle}><Col>{props.signIn}</Col></Row>
-        <Row style={loginRowStyle}><Col>{props.signinLink}</Col></Row>
+       <Login keyEnter={props.keyEnter} submitForm={props.submitForm} 
+                                      onUserNameChange={props.onUserNameChange} onPasswordChange={props.onPasswordChange}
+                                      message={props.message}></Login>
     </Container>
 )
 
 export const RegistrationScreenLayout = (props) =>(
-    <Container style={loginContainerStyle}>
-        <Row >
-            <Col lg={3} ></Col>
-            <Col lg={6} >{props.cred}</Col>
-            <Col lg={3} ></Col>
-        </Row>
-        <Row >
-            <Col lg={3} ></Col>
-            <Col lg={6} >{props.profile}</Col>
-            <Col lg={3} ></Col>
-        </Row>
+    <Container style={registrationPageLayout}>
+        <RegistrationScreen></RegistrationScreen>
     </Container>
 );
-
 export const HomeLayout = (props) =>(
     <Container>
         <Row>
@@ -54,15 +44,16 @@ export const HomeLayout = (props) =>(
     </Container>
 );
 
-const loginRowStyle = {
-    width:"100%",
-    paddingBottom: 2
-};
-const loginContainerStyle = {
-    width:"100%",
-    textAlign:"center",
-    top:100,
+const registrationPageLayout = {
+    width:"65%",
+    top:20,
     position: "relative",
-    border: "1px groove ",
+    paddingTop:20,
+};
+
+const loginContainerStyle = {
+    width:"50%",
+    top:200,
+    position: "relative",
     paddingTop:20,
 };

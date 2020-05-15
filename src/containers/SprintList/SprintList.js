@@ -1,6 +1,6 @@
 import React , {Component } from 'react';
 import { PropertyGet } from '../../containers/Common/Properties';
-import {SprintCardList} from '../../components/Home/SprintCard';
+import {SprintCardList} from '../../components/SprintCard/SprintCard';
 import { withRouter } from 'react-router-dom';
 
 
