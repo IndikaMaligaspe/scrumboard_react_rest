@@ -15,6 +15,7 @@ class SprintDetails extends Component{
         show: false,
         abd:'',
         users: [],
+        fetched: false,
     }
    
     constructor(props){
@@ -56,7 +57,8 @@ class SprintDetails extends Component{
                } 
 
             });  
-            toDoList.push({"id":"","name":"[ + ] - Add Task", "assigned":"Indika"});
+            if(this.state.fetched)
+                toDoList.push({"id":"","name":"[ + ] - Add Task", "assigned":"Indika", "sprint":this.state.id});
 
         }
         return [toDoList,inProgresList,completedList,inTestingList];
@@ -64,8 +66,13 @@ class SprintDetails extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token')
-        this.getTasks(token);
-        this.getUsers(token);        
+        this.getUsers(token)
+        .then(state=>{
+            this.getTasks(token);
+            this.setState({"fetched":true})
+        }).catch(message=>{
+            console.log(message);
+        });        
     }
 
     getTasks = (token) =>{
@@ -87,9 +94,12 @@ class SprintDetails extends Component{
     }
 
     getUsers= (token) =>{
-        const userDetailsAPIURL = PropertyGet({key:"userDetailsAPIURL"});
-        let users = [];
-        if(userDetailsAPIURL){
+        return new Promise((resolve, reject) => {
+            const userDetailsAPIURL = PropertyGet({key:"userDetailsAPIURL"});
+            let users = [];
+            if(!userDetailsAPIURL){
+                reject("URL not available");
+            }
             fetch(userDetailsAPIURL,
                 {method: 'GET',
                 headers:{'Content-Type': 'application/json', 
@@ -102,9 +112,13 @@ class SprintDetails extends Component{
                         users.push({"id":user.id, "name":user.username});      
                 });
                 this.setState({"users":users});
+                resolve(true);
             })
-            .catch((e)=>{console.log(e);})
-        }
+            .catch((e)=>{
+                console.log(e);
+                reject(e.message);
+            })
+        });
     }
 
     render(){
@@ -112,7 +126,7 @@ class SprintDetails extends Component{
         const taskMap = this.state.taskTypes;
         return(
             <Container>
-                { (taskList) && (taskList.length > 0) &&  
+                { (taskList) && (taskList.length > 0) && 
                 <Row >
                    {taskMap.map((value, index) =>{
                        return <React.Fragment key={index}>
@@ -121,7 +135,7 @@ class SprintDetails extends Component{
                                 <Card.Header>{value}</Card.Header>
                                 {
                                 taskList[index].map((task)=>(
-                                        <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
+                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
                                 ))
                                 }
                             </Card>
