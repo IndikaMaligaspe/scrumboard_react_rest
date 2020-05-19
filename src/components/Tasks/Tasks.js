@@ -17,7 +17,7 @@ export function Tasks (props) {
     
   return (
     <>  
-     <Modal show={props.show} onHide={props.handleClose} centered>
+     <Modal show={props.show} onHide={props.handleClose} centered backdrop="static">
                 <Modal.Header closeButton>
                 <Modal.Title>
                     <Form>
