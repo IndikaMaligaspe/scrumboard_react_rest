@@ -12,6 +12,7 @@ class SprintDetails extends Component{
         id: '',
         taskList:[],
         taskTypes:['To Do','In Development','Completed','In Testing'],
+        NewTask:{},
         show: false,
         abd:'',
         users: [],
@@ -55,8 +56,7 @@ class SprintDetails extends Component{
 
             });  
             if(this.state.fetched)
-                toDoList.push({"id":"","name":"[ + ] - Add Task", "assigned":"Indika", "sprint":this.state.id});
-
+                console.log("test");
         }
         return [toDoList,inProgresList,completedList,inTestingList];
     }
@@ -67,9 +67,12 @@ class SprintDetails extends Component{
         .then(state=>{
             this.getTasks(token);
             this.setState({"fetched":true})
+            let NewTask = {"id":"","name":"[ + ] - Add Task", "assigned":"", "sprint":this.state.id};
+            this.setState({"NewTask":NewTask});     
         }).catch(message=>{
             console.log(message);
-        });        
+        });   
+
     }
 
     getTasks = (token) =>{
@@ -121,6 +124,7 @@ class SprintDetails extends Component{
     render(){
         const taskList = this.prepTaskList(this.state.taskList);
         const taskMap = this.state.taskTypes;
+        const NewTask = this.state.NewTask;
         return(
             <Container>
                 { (taskList) && (taskList.length > 0) && 
@@ -132,9 +136,15 @@ class SprintDetails extends Component{
                                 <Card.Header>{value}</Card.Header>
                                 {
                                 taskList[index].map((task)=>(
-                                    <TaskList task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
+                                    <TaskList  task={task} key={task.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>       
                                 ))
                                 }
+                                <Card.Footer>
+                                {
+                                   (NewTask.name) && (value) && (value ==='To Do') &&
+                                         <TaskList addTask="false" task={NewTask} key={NewTask.id} users={this.state.users} sprintId={this.state.id}  clickOnCard={this.handleClick}>></TaskList>   
+                                }
+                                </Card.Footer>
                             </Card>
                         </Col>
                       </React.Fragment>

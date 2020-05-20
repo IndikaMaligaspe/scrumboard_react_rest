@@ -149,7 +149,9 @@ class TaskList extends Component {
                         setSelected = {this.setSelected}
                         start = {this.state.taskStart}
                         task ={this.state.stateTask}
-                        users= {this.state.users}></Tasks>        
+                        users= {this.state.users}
+                        addTask = {this.props.addTask}>
+                        </Tasks>        
         );
     }
   }
