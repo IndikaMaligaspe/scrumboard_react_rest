@@ -19,7 +19,7 @@ export const SprintCardAdd = (props) =>(
                                 <Form.Label> Name : </Form.Label>
                             </Col>
                             <Col sm="8"> 
-                                <Form.Control type="text" />
+                                <Form.Control type="text" onChange={(e)=>{props.handleNewSprintData(props.SPRINT_ENUM.NAME,e.target.value);}}/>
                             </Col>    
                         </Form.Group>
                         <Form.Group controlId="formGroupDescription" as={Row}>
@@ -27,7 +27,7 @@ export const SprintCardAdd = (props) =>(
                                 <Form.Label> Description : </Form.Label>
                             </Col>
                             <Col sm="8"> 
-                                <Form.Control size="1g" as="textarea" rows="3" />
+                                <Form.Control size="1g" as="textarea" rows="3" onChange={(e)=>{props.handleNewSprintData(props.SPRINT_ENUM.DESCRIPTION,e.target.value);}}/>
                             </Col>    
                         </Form.Group>
                         <Form.Group controlId="formGroupDate" as={Row}>
@@ -35,7 +35,7 @@ export const SprintCardAdd = (props) =>(
                                 <Form.Label> Due : </Form.Label>
                             </Col>
                             <Col sm="8"> 
-                                <Form.Control   type="Date"/>
+                                <Form.Control   type="Date" onChange={(e)=>{props.handleNewSprintData(props.SPRINT_ENUM.END,e.target.value);}}/>
                             </Col>    
                         </Form.Group>
                     </Modal.Body>

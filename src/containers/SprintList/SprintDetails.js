@@ -26,12 +26,10 @@ class SprintDetails extends Component{
     }
    
     handleClick(path, id){
-        console.log(path);
         if(path){
             this.props.history.push(path);     
             window.location.reload(false);
         }
-        
     }
 
     prepTaskList(taskList){
@@ -39,7 +37,6 @@ class SprintDetails extends Component{
         var inProgresList = []
         var completedList = [];
         var inTestingList = [];
-        // var mainList = [5]
         if(taskList){
             taskList.forEach(task => {
                 console.log(task.status);
