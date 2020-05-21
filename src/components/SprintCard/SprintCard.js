@@ -10,7 +10,7 @@ export const SprintCard = (props) =>(
                 <Card.Header>{props.sprint.name}</Card.Header>
                 <Card.Body>
                 <Card.Subtitle>Due: {props.sprint.end}</Card.Subtitle>
-                <Card.Text>{props.sprint.description}</Card.Text>   
+                {/* <Card.Text>{props.sprint.description}</Card.Text>    */}
                 </Card.Body>
             </Card>
         }
