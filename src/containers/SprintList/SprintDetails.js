@@ -11,7 +11,7 @@ class SprintDetails extends Component{
     state  = {
         id: '',
         taskList:[],
-        taskTypes:['To Do','In Development','Completed','In Testing'],
+        taskTypes:['To Do','In Development','In Testing','Completed'],
         NewTask:{},
         show: false,
         abd:'',
@@ -58,7 +58,7 @@ class SprintDetails extends Component{
             if(this.state.fetched)
                 console.log("test");
         }
-        return [toDoList,inProgresList,completedList,inTestingList];
+        return [toDoList,inProgresList,inTestingList,completedList];
     }
 
     componentDidMount(){
@@ -79,7 +79,7 @@ class SprintDetails extends Component{
         const sprintDetailsAPIURL = PropertyGet({key:'sprintDetailsAPIURL'});
         const id = this.state.id
         if ((id) && (sprintDetailsAPIURL)){
-            let url = sprintDetailsAPIURL+id
+            let url = sprintDetailsAPIURL+id+"&ordering=due"
             fetch(url,{
                 method: 'GET',
                 headers:{'Content-Type': 'application/json', 
