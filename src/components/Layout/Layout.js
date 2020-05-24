@@ -1,38 +1,60 @@
 import React from 'react'
 import { Container, Row, Col   } from 'react-bootstrap';
 import {Login} from '../../components/Login/Login'
-
+import LogoutView from '../../components/Logout/Logout'
 import RegistrationScreen from '../../components/Registration/RegistrationScreen'
 
 
 export const Layout =(props) =>(
-    <Container>
+    <Container fluid>
         {props.children}
     </Container>
 );
 
-export const LoginScreenLayout = (props) =>(
-    
-    <Container>
+export const LogoutLayout = (props) => (
+    <Container fluid >
         <Row >
-            <Col lg={3}></Col>
-            <Col lg={6}>{props.children}</Col>
-            <Col lg={3}></Col>
+            <Col></Col>
+            <Col sm={4}><LogoutView></LogoutView></Col>
+            <Col></Col>
         </Row>
     </Container>
+
 );
+
+
 
 export const LoginPageLayout = (props) =>(
     <Container style={loginContainerStyle}>
-       <Login keyEnter={props.keyEnter} submitForm={props.submitForm} 
+        <Row>
+            <Col sm={3}></Col>
+            <Col>
+                <Login keyEnter={props.keyEnter} submitForm={props.submitForm} 
                                       onUserNameChange={props.onUserNameChange} onPasswordChange={props.onPasswordChange}
                                       message={props.message}></Login>
+            </Col>
+            <Col sm={3}></Col>
+        </Row>
     </Container>
 )
 
 export const RegistrationScreenLayout = (props) =>(
-    <Container style={registrationPageLayout}>
-        <RegistrationScreen></RegistrationScreen>
+    <Container fluid style={registrationPageLayout}>
+        <Row>
+            <Col></Col>
+            <Col sm={5}>
+                <RegistrationScreen
+                    handleFieldInput={props.handleFieldInput}
+                    handleSubmit={props.handleSubmit}
+                    validated = {props.validated}
+                    passwordConfMessage={props.passwordConfMessage}
+                    emailMessage={props.emailMessage}        
+                    USER_FIELDS_ENUM={props.USER_FIELDS_ENUM}
+                     >
+                </RegistrationScreen>    
+             </Col>
+             <Col ></Col>
+        </Row>
     </Container>
 );
 export const HomeLayout = (props) =>(
@@ -45,15 +67,15 @@ export const HomeLayout = (props) =>(
 );
 
 const registrationPageLayout = {
-    width:"65%",
+    width:"100%",
     top:20,
     position: "relative",
     paddingTop:20,
 };
 
 const loginContainerStyle = {
-    width:"50%",
-    top:200,
+    width:"100%",
+    top:100,
     position: "relative",
     paddingTop:20,
 };

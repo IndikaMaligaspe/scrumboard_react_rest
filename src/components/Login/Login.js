@@ -4,9 +4,10 @@ import {Link} from 'react-router-dom';
 
 
 const ButtonDiv = {
-    textAlign:"right",
-    paddingBottom:0,
+    textAlign:"left",
+    paddingBottom:1,
     margin:0,
+    width: '100%'
 }
 
 
@@ -35,15 +36,14 @@ export const Login = (props) =>(
                             </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                            <Col sm={6}>
-                                <span></span>
+                            <Col sm={12} style={ButtonDiv}>
+                                <Button  style={{width:"100%"}} onClick={props.submitForm}>Sign In</Button>
                             </Col>
-                            <Col sm={3} style={ButtonDiv}>
-                                <Button  onClick={props.submitForm}>Sign In</Button>
-                            </Col>
-                            <Col sm={3} style={ButtonDiv}>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                            <Col>Dont have an account, &nbsp;
                                 <Link to="/register">
-                                    <Button>Sign Up</Button>
+                                    Singn Up
                                 </Link>
                             </Col>
                     </Form.Group>

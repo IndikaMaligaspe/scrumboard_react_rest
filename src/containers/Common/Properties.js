@@ -8,6 +8,7 @@ const URLS = {
     taskDetailsAPIURL:'http://localhost:8000/api/tasks/',
     userDetailsAPIURL:'http://localhost:8000/api/users',
     taskCreateAPIURL:'http://localhost:8000/api/tasks',
+    registUserAPIURL:'http://localhost:8000/api/users',
 }
 
  const PropertyGet =  (props) => {

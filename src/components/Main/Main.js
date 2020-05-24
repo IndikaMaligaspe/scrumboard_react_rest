@@ -4,6 +4,7 @@ import RegsitrationScreen from '../../containers/Registration/RegistrationContai
 import HomeScreen from '../Home/Home'
 import SprintDetails from '../../containers/SprintList/SprintDetails'
 import Login from '../../containers/Login/Login'
+import {LogoutLayout} from '../../components/Layout/Layout'
 
 
 const Main = props =>(
@@ -11,6 +12,7 @@ const Main = props =>(
        <Route exact path="/" component={Login}></Route>
        <Route exact path="/login" component={Login}></Route>
        <Route exact path="/register" component={RegsitrationScreen}></Route>
+       <Route exact path="/logout" component={LogoutLayout}></Route>
        <Route exact path="/home" component={HomeScreen}></Route>
        <Route exact path="/sprintDetails/:id" component={SprintDetails}></Route>
     </Switch>
