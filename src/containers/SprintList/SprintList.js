@@ -62,6 +62,8 @@ class SprintList extends Component{
     handleSprintSave(){
         let data = this.state.sprint
         let token = localStorage.getItem('token')
+        console.log(data);
+        
         if((data.name) && (data.description) && (data.end)){
             if(token){    
                 let sprintAPIURL = PropertyGet({key:"sprintAPIURL"});
